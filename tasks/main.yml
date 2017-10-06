@@ -1,0 +1,55 @@
+---
+- name: Install python packages
+  yum:
+   name: libselinux-python
+   state: installed
+
+- name: Add epel gpg key for vagrant servers
+  rpm_key:
+   state: present
+   key: https://archive.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7
+   validate_certs: False
+  when: ansible_bios_version == 'VirtualBox' and ansible_distribution_major_version > 7
+
+- name: Perform yum update everything
+  yum:
+   name: '*'
+   state: latest
+   disable_gpg_check: yes
+  when: ansible_bios_version != 'VirtualBox'
+  tags: yumupdate
+
+- name: Perform yum update everything for vagrant servers
+  yum:
+   name: '*'
+   state: latest
+   disable_gpg_check: yes
+  when: ansible_bios_version == 'VirtualBox'
+  tags: yumupdate
+
+- include: section_01.yml
+  tags: section1
+
+- include: section_02.yml
+  tags: section2
+
+- include: section_03.yml
+  tags: section3
+
+- include: section_04.yml
+  tags: section4
+
+- include: section_05.yml
+  tags: section5
+
+- include: section_06.yml
+  tags: section6
+
+- include: section_07.yml
+  tags: section7
+
+- include: section_08.yml
+  tags: section8
+
+- include: section_09.yml
+  tags: section9
